@@ -2,6 +2,7 @@ package com.example.androedik2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,15 +10,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MyList extends Activity {
     int index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.my_list);
+
+        Bundle arguments = getIntent().getExtras();
+        String str = arguments.get("hello").toString();
+        Toast.makeText(MyList.this, str, Toast.LENGTH_SHORT).show();
 
         Button delete = findViewById(R.id.DeleteButton);
         Button add = findViewById(R.id.AddButton);
