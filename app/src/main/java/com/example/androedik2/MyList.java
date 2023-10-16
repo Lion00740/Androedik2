@@ -3,7 +3,10 @@ package com.example.androedik2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,10 +19,19 @@ import java.util.ArrayList;
 
 public class MyList extends Activity {
     int index = 0;
+    SharedPreferences sharedPreferences;
+    ArrayList<String> myStringArray = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_list);
+
+        for (int i = 0; i < sharedPreferences.getInt("size", 0); i++) {
+            myStringArray.add(sharedPreferences.getString("text" + i, "" + i));
+        }
 
         Bundle arguments = getIntent().getExtras();
         String str = arguments.get("hello").toString();
@@ -28,12 +40,14 @@ public class MyList extends Activity {
         Button delete = findViewById(R.id.DeleteButton);
         Button add = findViewById(R.id.AddButton);
 
-        ArrayList<String> myStringArray = new ArrayList<String>();
+
         ArrayAdapter<String> TextAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, myStringArray);
+
         ListView textList = findViewById(R.id.textList);
 
         textList.setAdapter(TextAdapter);
+        
         EditText editText = findViewById(R.id.EditText);
 
         textList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,5 +76,21 @@ public class MyList extends Activity {
                 TextAdapter.notifyDataSetChanged();
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (int i = 0; i < myStringArray.size(); i++)
+        {
+            editor.putString("text" + i, myStringArray.get(i).toString());
+            Log.i("Занесено", myStringArray.get(i).toString());
+            editor.apply();
+        }
+        editor.putInt("size", myStringArray.size());
+        Log.i("size", String.valueOf(myStringArray.size()));
+        editor.apply();
+
+        super.onDestroy();
     }
 }

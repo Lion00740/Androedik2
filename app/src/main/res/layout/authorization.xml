@@ -30,4 +30,16 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:text="Войти" />
+
+    <Switch
+        android:id="@+id/switchColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="9dp"
+        android:textOff = "🌚"
+        android:textOn = "🌝"/>
 </RelativeLayout>
