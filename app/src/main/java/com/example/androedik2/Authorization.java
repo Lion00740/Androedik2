@@ -30,7 +30,6 @@ public class Authorization extends AppCompatActivity {
         EditText editEmail = findViewById(R.id.editTextEmail);
         EditText editPassword = findViewById(R.id.editTextPassword);
 
-
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
