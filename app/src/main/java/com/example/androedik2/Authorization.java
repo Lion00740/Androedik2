@@ -22,14 +22,14 @@ public class Authorization extends AppCompatActivity {
     Boolean switchStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.authorization);
         RelativeLayout relativeLayout = findViewById(R.id.authorization);
         Switch switchColor = findViewById(R.id.switchColor);
         Button buttonAuthorization = findViewById(R.id.buttonAuthorization);
         EditText editEmail = findViewById(R.id.editTextEmail);
         EditText editPassword = findViewById(R.id.editTextPassword);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.authorization);
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
