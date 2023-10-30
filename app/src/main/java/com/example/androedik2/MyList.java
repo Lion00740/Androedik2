@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class MyList extends Activity {
     int index = 0;
+    DatabaseHandler db = new DatabaseHandler(this);
+    User currentUser = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,5 +64,10 @@ public class MyList extends Activity {
                 TextAdapter.notifyDataSetChanged();
             }
         });
+    }
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
     }
 }

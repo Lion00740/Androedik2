@@ -10,16 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class Authorization extends AppCompatActivity {
     String email = "nikitapap";
     String password = "12345";
-
+    DatabaseHandler db = new DatabaseHandler(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Toast mytoast = new Toast(this);
-        Toast.makeText(Authorization.this, "Create", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization);
+
+        Toast mytoast = new Toast(this);
+        Toast.makeText(Authorization.this, "Create", Toast.LENGTH_SHORT).show();
 
         Button buttonAuthorization = findViewById(R.id.buttonAuthorization);
         EditText editEmail = findViewById(R.id.editTextEmail);
@@ -28,12 +31,24 @@ public class Authorization extends AppCompatActivity {
         buttonAuthorization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editEmail.getText().toString().equals(email)
-                        && editPassword.getText().toString().equals(password))
+                List<User> userList = db.getAllUsers();
+                User currentUser;
+                boolean access = false;
+                for (int i = 0; i < userList.size(); i++)
                 {
-                    Intent intent = new Intent(Authorization.this, MyList.class);
-                    intent.putExtra("hello", "Hello from FirstActivity");
-                    startActivity(intent);
+                    currentUser = userList.get(i);
+                    if (editEmail.getText().toString().equals(currentUser.getLogin())
+                        && editPassword.getText().toString().equals(currentUser.getPass())){
+                        Intent intent = new Intent(Authorization.this, MyList.class);
+                        intent.putExtra("account", currentUser.getID());
+                        finish();
+                        startActivity(intent);
+                        access = true;
+                    }
+                }
+                if (!access)
+                {
+                    Toast.makeText(Authorization.this, "Неверный пароль или логин", Toast.LENGTH_SHORT).show();
                 }
             }
         });
