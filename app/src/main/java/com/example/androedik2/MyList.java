@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyList extends Activity {
     int index = 0;
@@ -27,15 +28,30 @@ public class MyList extends Activity {
         String str = arguments.get("hello").toString();
         Toast.makeText(MyList.this, str, Toast.LENGTH_SHORT).show();
 
-        Button delete = findViewById(R.id.DeleteButton);
-        Button add = findViewById(R.id.AddButton);
-
         ArrayList<String> myStringArray = new ArrayList<String>();
+
+        List<User> userList = db.getAllUsers();
+        for (int i = 0; i < userList.size(); i++)
+        {
+            myStringArray.add(userList.get(i)._login + "\t" + userList.get(i)._pass);
+        }
+
+        int userId = Integer.parseInt(arguments.get("account").toString());
+        for(int i = 0; i < userList.size(); i++)
+        {
+            if (userList.get(i).getID() == userId)
+            {
+                currentUser = userList.get(i);
+                index = i;
+            }
+        }
+
         ArrayAdapter<String> TextAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, myStringArray);
         ListView textList = findViewById(R.id.textList);
 
         textList.setAdapter(TextAdapter);
+        TextAdapter.notifyDataSetChanged();
         EditText editText = findViewById(R.id.EditText);
 
         textList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,6 +60,8 @@ public class MyList extends Activity {
                 index = i;
             }
         });
+
+        Button delete = findViewById(R.id.DeleteButton);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +74,8 @@ public class MyList extends Activity {
                 TextAdapter.notifyDataSetChanged();
             }
         });
+
+        Button add = findViewById(R.id.AddButton);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
