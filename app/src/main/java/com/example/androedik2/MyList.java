@@ -60,6 +60,7 @@ public class MyList extends Activity {
                 index = i;
             }
         });
+        
 
         Button delete = findViewById(R.id.DeleteButton);
         delete.setOnClickListener(new View.OnClickListener() {
