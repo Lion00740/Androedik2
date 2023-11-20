@@ -13,8 +13,6 @@ import android.widget.Toast;
 import java.util.List;
 
 public class Authorization extends AppCompatActivity {
-    String email = "nikitapap";
-    String password = "12345";
     DatabaseHandler db = new DatabaseHandler(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +25,12 @@ public class Authorization extends AppCompatActivity {
         Button buttonAuthorization = findViewById(R.id.buttonAuthorization);
         EditText editEmail = findViewById(R.id.editTextEmail);
         EditText editPassword = findViewById(R.id.editTextPassword);
-
         buttonAuthorization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*Intent intent = new Intent(Authorization.this, MyList.class);
+                intent.putExtra("hello", "Hello from FirstActivity");
+                startActivity(intent);*/
                 List<User> userList = db.getAllUsers();
                 User currentUser;
                 boolean access = false;
@@ -50,6 +50,8 @@ public class Authorization extends AppCompatActivity {
                 {
                     Toast.makeText(Authorization.this, "Неверный пароль или логин", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
     }

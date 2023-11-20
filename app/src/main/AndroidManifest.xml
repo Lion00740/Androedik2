@@ -13,19 +13,18 @@
         android:theme="@style/Theme.Androedik2"
         tools:targetApi="31">
         <activity
+            android:name=".MyList">
+
+        </activity>
+        <activity
             android:name=".Authorization"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MyList"
-            android:exported="true">
 
-        </activity>
     </application>
 
 </manifest>
