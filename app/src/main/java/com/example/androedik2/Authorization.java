@@ -28,30 +28,30 @@ public class Authorization extends AppCompatActivity {
         buttonAuthorization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Authorization.this, MyList.class);
-                intent.putExtra("hello", "Hello from FirstActivity");
-                startActivity(intent);*/
-                List<User> userList = db.getAllUsers();
-                User currentUser;
-                boolean access = false;
-                for (int i = 0; i < userList.size(); i++)
-                {
-                    currentUser = userList.get(i);
-                    if (editEmail.getText().toString().equals(currentUser.getLogin())
-                        && editPassword.getText().toString().equals(currentUser.getPass())){
-                        Intent intent = new Intent(Authorization.this, MyList.class);
-                        intent.putExtra("account", currentUser.getID());
-                        finish();
-                        startActivity(intent);
-                        access = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<User> userList = db.getAllUsers();
+                        User currentUser;
+                        boolean access = false;
+                        for (int i = 0; i < userList.size(); i++)
+                        {
+                            currentUser = userList.get(i);
+                            if (editEmail.getText().toString().equals(currentUser.getLogin())
+                                    && editPassword.getText().toString().equals(currentUser.getPass())){
+                                Intent intent = new Intent(Authorization.this, MyList.class);
+                                intent.putExtra("account", currentUser.getID());
+                                finish();
+                                startActivity(intent);
+                                access = true;
+                            }
+                        }
+                        if (!access)
+                        {
+                            Toast.makeText(Authorization.this, "Неверный пароль или логин", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-                if (!access)
-                {
-                    Toast.makeText(Authorization.this, "Неверный пароль или логин", Toast.LENGTH_SHORT).show();
-                }
-
-
+                }).start();
             }
         });
     }

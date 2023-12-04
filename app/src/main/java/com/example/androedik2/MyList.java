@@ -65,12 +65,22 @@ public class MyList extends Activity {
         builder.setView(et).setTitle("Укажите новый пароль пользователя").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                db.updateUser(currentUser, et.getText().toString());
-                currentUser.setPass(et.getText().toString());
-                myStringArray.remove(index);
-                myStringArray.add(index, currentUser.getLogin() + "\t" + currentUser.getPass());
-                TextAdapter.notifyDataSetChanged();
-                dialogInterface.cancel();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.updateUser(userList.get(index), et.getText().toString());
+                        userList.get(index).setPass(et.getText().toString());
+                        myStringArray.remove(index);
+                        myStringArray.add(index, userList.get(index).getLogin() + "\t" + userList.get(index).getPass());
+                        textList.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        dialogInterface.cancel();
+                    }
+                }).start();
             }
         });
 
@@ -80,18 +90,28 @@ public class MyList extends Activity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editLogin = findViewById(R.id.editLogin);
-                for(int i = 0; i < userList.size(); i++)
-                {
-                    if (editLogin.getText().toString().equals(userList.get(i)._login))
-                    {
-                        db.deleteUser(userList.get(i));
-                        myStringArray.remove(i);
-                        userList.remove(i);
-                        i--;
-                        TextAdapter.notifyDataSetChanged();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditText editLogin = findViewById(R.id.editLogin);
+                        for(int i = 0; i < userList.size(); i++)
+                        {
+                            if (editLogin.getText().toString().equals(userList.get(i)._login))
+                            {
+                                db.deleteUser(userList.get(i));
+                                myStringArray.remove(i);
+                                userList.remove(i);
+                                i--;
+                                textList.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        TextAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        }
                     }
-                }
+                }).start();
             }
         });
 
@@ -99,14 +119,22 @@ public class MyList extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editLogin = findViewById(R.id.editLogin);
-                EditText editPass = findViewById(R.id.editPass);
-                userList.add(new User(editLogin.getText().toString(), editPass.getText().toString()));
-                db.addUser(new User(editLogin.getText().toString(), editPass.getText().toString()));
-                myStringArray.add(editLogin.getText().toString() + "\t" + editPass.getText().toString());
-                editLogin.setText("");
-                editPass.setText("");
-                TextAdapter.notifyDataSetChanged();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditText editLogin = findViewById(R.id.editLogin);
+                        EditText editPass = findViewById(R.id.editPass);
+                        userList.add(new User(editLogin.getText().toString(), editPass.getText().toString()));
+                        db.addUser(new User(editLogin.getText().toString(), editPass.getText().toString()));
+                        myStringArray.add(editLogin.getText().toString() + "\t" + editPass.getText().toString());
+                        textList.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }).start();
             }
         });
 
